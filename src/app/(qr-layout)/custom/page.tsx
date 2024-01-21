@@ -38,7 +38,7 @@ export default function Custom() {
   useEffect(() => {
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
-        setCameraId(devices[0].id);
+        setCameraId(devices[devices.length - 1].id);
       }
     });
   }, []);
@@ -47,7 +47,7 @@ export default function Custom() {
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader");
       html5QrCode.start(
-        cameraId,
+        { facingMode: "environment" },
         {
           fps: 10,
           qrbox: { width: 250, height: 250 },
