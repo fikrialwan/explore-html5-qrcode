@@ -47,7 +47,7 @@ export default function Custom() {
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader");
       html5QrCode.start(
-        { facingMode: "environment" },
+        { deviceId: { exact: cameraId }, facingMode: "environment" },
         {
           fps: 10,
           qrbox: { width: 250, height: 250 },
