@@ -6,13 +6,13 @@ export default function QrLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-screen w-full max-w-5xl m-auto">
+    <div className="h-screen w-full max-w-5xl m-auto flex flex-col">
       <header>
         <nav className="py-6 px-4">
           <Link href="/">&lt;- Back</Link>
         </nav>
       </header>
-      <main className="px-4">{children}</main>
+      <main className="px-4 flex-1">{children}</main>
     </div>
   );
 }
