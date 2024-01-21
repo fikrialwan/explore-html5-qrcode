@@ -7,9 +7,11 @@ export default function QrLayout({
 }>) {
   return (
     <div className="h-screen w-full max-w-5xl m-auto">
-      <nav className="py-6">
-        <Link href="/">&lt;- Back</Link>
-      </nav>
+      <header>
+        <nav className="py-6">
+          <Link href="/">&lt;- Back</Link>
+        </nav>
+      </header>
       <main>{children}</main>
     </div>
   );
