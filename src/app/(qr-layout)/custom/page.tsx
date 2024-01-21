@@ -2,12 +2,33 @@
 
 import { Html5Qrcode } from "html5-qrcode";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
 
 export default function Custom() {
-  const inputFileRef = useRef(null);
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const [cameraId, setCameraId] = useState<string>("");
+
+  const handleUploadScan: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const html5QrCode = new Html5Qrcode("upload");
+    if (!event.target.files || event.target.files?.length == 0) {
+      return;
+    }
+
+    const imageFile = event.target.files[0];
+    html5QrCode
+      .scanFile(imageFile, true)
+      .then((decodedText) => {
+        router.replace("/?result=" + decodedText);
+      })
+      .catch((err) => {
+        console.log(`Error scanning file. Reason: ${err}`);
+      });
+  };
+
+  const handleClickButton = () => {
+    inputFileRef.current?.click();
+  };
 
   useEffect(() => {
     Html5Qrcode.getCameras().then((devices) => {
@@ -23,8 +44,8 @@ export default function Custom() {
       html5QrCode.start(
         cameraId,
         {
-          fps: 10, // Optional, frame per seconds for qr code scanning
-          qrbox: { width: 250, height: 250 }, // Optional, if you want bounded box UI
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
           aspectRatio: window.innerWidth / (window.innerHeight - 120),
         },
         (decodedText: string) => {
@@ -43,8 +64,17 @@ export default function Custom() {
     <div className="flex flex-col gap-2 h-full">
       <h1>Custom page</h1>
       <div id="reader" className="flex-1" />
-      <input type="file" hidden ref={inputFileRef} />
-      <button className="py-4">Upload QR Code</button>
+      <input
+        type="file"
+        hidden
+        ref={inputFileRef}
+        accept="image/*"
+        onChange={handleUploadScan}
+        id="upload"
+      />
+      <button className="py-4" onClick={handleClickButton}>
+        Upload QR Code
+      </button>
     </div>
   );
 }
