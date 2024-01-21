@@ -3,10 +3,12 @@
 import { Html5Qrcode } from "html5-qrcode";
 import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
+import { useToast } from "~/components/ui/use-toast";
 
 export default function Custom() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { toast } = useToast();
   const [cameraId, setCameraId] = useState<string>("");
 
   const handleUploadScan: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -21,8 +23,11 @@ export default function Custom() {
       .then((decodedText) => {
         router.replace("/?result=" + decodedText);
       })
-      .catch((err) => {
-        console.log(`Error scanning file. Reason: ${err}`);
+      .catch((_) => {
+        toast({
+          variant: "destructive",
+          title: "QR Code tidak bisa dibaca.",
+        });
       });
   };
 
