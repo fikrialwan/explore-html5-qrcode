@@ -5,7 +5,7 @@ import { BrowserMultiFormatReader } from "@zxing/library";
 import { useRouter } from "next/navigation";
 
 export default function ZxingLibrary() {
-    const router = useRouter()
+  const router = useRouter();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const reader = useRef(new BrowserMultiFormatReader());
@@ -17,7 +17,8 @@ export default function ZxingLibrary() {
         audio: false,
         video: {
           facingMode: "environment",
-          aspectRatio: screen.availWidth / screen.availHeight
+          height: screen.availHeight,
+          width: screen.availWidth
         },
       },
       videoRef.current,
@@ -30,5 +31,12 @@ export default function ZxingLibrary() {
     };
   }, [videoRef]);
 
-  return <video ref={videoRef} className="h-full w-full" />;
+  return (
+    <>
+      <video ref={videoRef} className="h-full w-full" />
+      <p>
+        width: {screen.availHeight} <br /> height: {screen.availHeight}
+      </p>
+    </>
+  );
 }
