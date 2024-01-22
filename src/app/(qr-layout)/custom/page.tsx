@@ -51,8 +51,8 @@ export default function Custom() {
           cameraId,
           {
             fps: 10,
-            qrbox: { width: 250, height: 250 },
-            aspectRatio: window.innerWidth / (window.innerHeight - 120),
+            qrbox: 250,
+            aspectRatio: 9 / 16,
           },
           (decodedText: string) => {
             router.replace("/?result=" + decodedText);
