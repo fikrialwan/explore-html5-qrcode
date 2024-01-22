@@ -49,17 +49,17 @@ export default function Custom() {
         },
         (errorMessage: string) => {
           console.log({ errorMessage });
-          // toast({
-          //   variant: "destructive",
-          //   title: errorMessage,
-          // });
+          toast({
+            variant: "destructive",
+            title: errorMessage,
+          });
         }
       )
       .catch((err) => {
-        // toast({
-        //   variant: "destructive",
-        //   title: err.toString(),
-        // });
+        toast({
+          variant: "destructive",
+          title: err.toString(),
+        });
       });
 
   }, [router]);
