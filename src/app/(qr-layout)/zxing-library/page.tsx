@@ -17,8 +17,7 @@ export default function ZxingLibrary() {
         audio: false,
         video: {
           facingMode: "environment",
-          height: screen.availHeight,
-          width: screen.availWidth
+          aspectRatio: screen.availWidth / screen.availHeight
         },
       },
       videoRef.current,
