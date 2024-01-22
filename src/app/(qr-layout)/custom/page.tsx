@@ -60,6 +60,7 @@ export default function Custom() {
           variant: "destructive",
           title: err.toString(),
         });
+        router.refresh();
       });
 
   }, [router]);
