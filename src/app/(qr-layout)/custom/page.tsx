@@ -48,11 +48,11 @@ export default function Custom() {
       const html5QrCode = new Html5Qrcode("reader", true);
       html5QrCode
         .start(
-          cameraId,
+          { facingMode: "environment" },
           {
             fps: 10,
             qrbox: 250,
-            aspectRatio: 9 / 16,
+            aspectRatio: window.innerWidth / (window.innerHeight - 120),
           },
           (decodedText: string) => {
             router.replace("/?result=" + decodedText);
@@ -71,7 +71,7 @@ export default function Custom() {
             title: err.toString(),
           });
         });
-
+  
       return () => {
         html5QrCode.stop();
       };
