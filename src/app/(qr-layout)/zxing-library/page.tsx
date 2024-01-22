@@ -9,18 +9,21 @@ export default function ZxingLibrary() {
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const reader = useRef(new BrowserMultiFormatReader());
-  const [size, setSize] = useState({heigth: 0, width: 0})
+  const [size, setSize] = useState({ heigth: 0, width: 0 });
 
   useEffect(() => {
-    setSize({heigth: screen.availHeight, width: screen.availWidth})
+    setSize({ heigth: screen.availHeight, width: screen.availWidth });
+  }, []);
+
+  useEffect(() => {
     if (!videoRef.current) return;
     reader.current.decodeFromConstraints(
       {
         audio: false,
         video: {
           facingMode: "environment",
-          height: screen.availHeight,
-          width: screen.availWidth
+          height: size.heigth,
+          width: size.width,
         },
       },
       videoRef.current,
@@ -31,7 +34,7 @@ export default function ZxingLibrary() {
     return () => {
       reader.current.reset();
     };
-  }, [videoRef]);
+  }, [videoRef, size.heigth, size.width]);
 
   return (
     <>
