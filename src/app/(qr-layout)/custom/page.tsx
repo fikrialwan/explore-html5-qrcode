@@ -45,9 +45,9 @@ export default function Custom() {
 
   useEffect(() => {
     if (cameraId) {
-      const html5QrCode = new Html5Qrcode("reader");
+      const html5QrCode = new Html5Qrcode("reader", true);
       html5QrCode.start(
-        { deviceId: { exact: cameraId }, facingMode: "environment" },
+        cameraId,
         {
           fps: 10,
           qrbox: { width: 250, height: 250 },
@@ -56,7 +56,9 @@ export default function Custom() {
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
         },
-        undefined
+        (errorMessage: string) => {
+          console.log({errorMessage})
+        }
       );
 
       return () => {
