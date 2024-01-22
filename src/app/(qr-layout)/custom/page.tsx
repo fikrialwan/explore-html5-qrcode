@@ -2,13 +2,14 @@
 
 import { Html5Qrcode } from "html5-qrcode";
 import { useRouter } from "next/navigation";
-import { type ChangeEventHandler, useEffect, useRef } from "react";
+import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 
 export default function Custom() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { toast } = useToast();
+  const [cameraId, setCameraId] = useState<string>("");
 
   const handleUploadScan: ChangeEventHandler<HTMLInputElement> = (event) => {
     const html5QrCode = new Html5Qrcode("upload");
@@ -35,35 +36,35 @@ export default function Custom() {
   };
 
   useEffect(() => {
-    const html5QrCode = new Html5Qrcode("reader", true);
-    html5QrCode
-      .start(
-        { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: 250,
-          aspectRatio: window.innerWidth / (window.innerHeight - 120),
-        },
-        (decodedText: string) => {
-          router.replace("/?result=" + decodedText);
-        },
-        (errorMessage: string) => {
-          console.log({ errorMessage });
-          toast({
-            variant: "destructive",
-            title: errorMessage,
-          });
-        }
-      )
-      .catch((err) => {
-        toast({
-          variant: "destructive",
-          title: err.toString(),
-        });
-        router.refresh();
-      });
+    Html5Qrcode.getCameras().then((devices) => {
+      if (devices && devices.length) {
+        setCameraId(devices[devices.length - 1].id);
+      }
+    });
+  }, []);
 
-  }, [router]);
+  useEffect(() => {
+    if (cameraId) {
+      const html5QrCode = new Html5Qrcode("reader", true);
+      html5QrCode
+        .start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: 250,
+            aspectRatio: window.innerWidth / (window.innerHeight - 120),
+          },
+          (decodedText: string) => {
+            router.replace("/?result=" + decodedText);
+          },
+          undefined
+        )
+        
+      return () => {
+        html5QrCode.stop();
+      };
+    }
+  }, [cameraId, router]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
