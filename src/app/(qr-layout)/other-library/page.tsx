@@ -6,19 +6,16 @@ import { QrReader } from "react-qr-reader";
 export default function OtherLibrary() {
   const router = useRouter();
   return (
-    <div>
+    <div className="h-full">
       <QrReader
         onResult={(result) => {
           if (result) {
             router.replace("/?result=" + result?.getText());
           }
-
-        //   if (error) {
-        //     console.log({ error });
-        //   }
         }}
         constraints={{ facingMode: "environment" }}
         className="w-full h-full"
+        containerStyle={{innerHeight: '100%', outerHeight: '100%'}}
       />
     </div>
   );
