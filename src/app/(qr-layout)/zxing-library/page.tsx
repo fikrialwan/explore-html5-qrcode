@@ -17,8 +17,6 @@ export default function ZxingLibrary() {
         audio: false,
         video: {
           facingMode: "environment",
-          height: window.innerHeight,
-          width: window.innerWidth
         },
 
       },
