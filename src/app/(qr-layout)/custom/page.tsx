@@ -29,12 +29,12 @@ export default function Custom() {
           title: "QR Code tidak bisa dibaca.",
         });
       });
-  };
-
+    };
+    
   const handleClickButton = () => {
     inputFileRef.current?.click();
   };
-
+  
   useEffect(() => {
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
@@ -42,7 +42,7 @@ export default function Custom() {
       }
     });
   }, []);
-
+  
   useEffect(() => {
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", true);
@@ -58,6 +58,10 @@ export default function Custom() {
         },
         (errorMessage: string) => {
           console.log({errorMessage})
+          toast({
+            variant: "destructive",
+            title: errorMessage,
+          });
         }
       );
 
