@@ -17,13 +17,13 @@ export default function ZxingLibrary() {
         audio: false,
         video: {
           facingMode: "environment",
+          height: screen.availHeight,
+          width: screen.availWidth
         },
-
       },
       videoRef.current,
-      (result, error) => {
+      (result) => {
         if (result) router.replace("/?result=" + result?.getText());
-        if (error) console.log(error);
       }
     );
     return () => {
