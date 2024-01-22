@@ -29,12 +29,12 @@ export default function Custom() {
           title: "QR Code tidak bisa dibaca.",
         });
       });
-    };
-    
+  };
+
   const handleClickButton = () => {
     inputFileRef.current?.click();
   };
-  
+
   useEffect(() => {
     Html5Qrcode.getCameras().then((devices) => {
       if (devices && devices.length) {
@@ -42,28 +42,35 @@ export default function Custom() {
       }
     });
   }, []);
-  
+
   useEffect(() => {
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", true);
-      html5QrCode.start(
-        cameraId,
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: window.innerWidth / (window.innerHeight - 120),
-        },
-        (decodedText: string) => {
-          router.replace("/?result=" + decodedText);
-        },
-        (errorMessage: string) => {
-          console.log({errorMessage})
+      html5QrCode
+        .start(
+          cameraId,
+          {
+            fps: 10,
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: window.innerWidth / (window.innerHeight - 120),
+          },
+          (decodedText: string) => {
+            router.replace("/?result=" + decodedText);
+          },
+          (errorMessage: string) => {
+            console.log({ errorMessage });
+            toast({
+              variant: "destructive",
+              title: errorMessage,
+            });
+          }
+        )
+        .catch((err) => {
           toast({
             variant: "destructive",
-            title: errorMessage,
+            title: err.toString(),
           });
-        }
-      );
+        });
 
       return () => {
         html5QrCode.stop();
