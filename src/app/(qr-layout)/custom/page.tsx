@@ -50,7 +50,7 @@ export default function Custom() {
         cameraId,
         {
           fps: 10,
-          qrbox: { width: 250, height: 100 },
+          qrbox: { width: 290, height: 100 },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
