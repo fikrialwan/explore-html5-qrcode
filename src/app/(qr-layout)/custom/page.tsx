@@ -50,7 +50,7 @@ export default function Custom() {
         cameraId,
         {
           fps: 10,
-          qrbox: { width: 250, height: 250 },
+          qrbox: { width: 250, height: 100 },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
@@ -67,7 +67,7 @@ export default function Custom() {
   return (
     <div className="flex flex-col gap-2 h-full">
       <h1>Custom page</h1>
-      <div id="reader" className="flex-1" />
+      <div id="reader" className="w-full" />
       <input
         type="file"
         hidden
