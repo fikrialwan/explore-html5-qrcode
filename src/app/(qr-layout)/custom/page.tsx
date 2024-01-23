@@ -51,7 +51,6 @@ export default function Custom() {
         {
           fps: 10,
           qrbox: { width: 250, height: 250 },
-          aspectRatio: screen.availWidth / (screen.availHeight - 120),
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
