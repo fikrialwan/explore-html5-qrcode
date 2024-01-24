@@ -60,17 +60,12 @@ export default function Custom() {
         {
           fps: 10,
           qrbox: { width: 290, height: 100 },
-          videoConstraints: {
-            aspectRatio: {
-              ideal: 29/10
-            }
-          }
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
         },
         undefined
-      );
+      )
 
       return () => {
         html5QrCode.stop();
