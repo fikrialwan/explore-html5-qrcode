@@ -58,7 +58,7 @@ export default function Custom() {
       html5QrCode.start(
         cameraId,
         {
-          fps: 10,
+          fps: 20,
           qrbox: { width: 290, height: 100 },
         },
         (decodedText: string) => {
