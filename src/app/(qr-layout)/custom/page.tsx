@@ -36,18 +36,20 @@ export default function Custom() {
   };
 
   useEffect(() => {
-    Html5Qrcode.getCameras().then((devices) => {
-      if (devices && devices.length) {
-        setCameraId(devices[devices.length - 1].id);
-      }
-    }).catch((err: string) => {
-      if(`${err}` === "NotAllowedError: Permission denied") {
-        toast({
-          variant: "destructive",
-          title: "Please enable your permission browser",
-        });
-      }
-    });
+    Html5Qrcode.getCameras()
+      .then((devices) => {
+        if (devices && devices.length) {
+          setCameraId(devices[devices.length - 1].id);
+        }
+      })
+      .catch((err: string) => {
+        if (`${err}` === "NotAllowedError: Permission denied") {
+          toast({
+            variant: "destructive",
+            title: "Please enable your permission browser",
+          });
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -58,12 +60,13 @@ export default function Custom() {
         {
           fps: 10,
           qrbox: { width: 290, height: 100 },
+          aspectRatio: 29/10
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
         },
         undefined
-      )
+      );
 
       return () => {
         html5QrCode.stop();
@@ -72,7 +75,7 @@ export default function Custom() {
   }, [cameraId, router]);
 
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex flex-col gap-2">
       <h1>Custom page</h1>
       <div id="reader" className="w-full" />
       <input
