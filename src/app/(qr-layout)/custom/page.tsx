@@ -1,6 +1,6 @@
 "use client";
 
-import { Html5Qrcode } from "html5-qrcode";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
@@ -54,7 +54,11 @@ export default function Custom() {
 
   useEffect(() => {
     if (cameraId) {
-      const html5QrCode = new Html5Qrcode("reader", true);
+      const html5QrCode = new Html5Qrcode("reader", {
+        formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39],
+        verbose: true,
+        useBarCodeDetectorIfSupported: true,
+      });
       html5QrCode.start(
         cameraId,
         {
@@ -65,7 +69,7 @@ export default function Custom() {
           router.replace("/?result=" + decodedText);
         },
         undefined
-      )
+      );
 
       return () => {
         html5QrCode.stop();
