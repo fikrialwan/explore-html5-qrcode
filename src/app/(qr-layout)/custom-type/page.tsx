@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 
-export default function Custom() {
+export default function CustomType() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { toast } = useToast();
@@ -54,7 +54,11 @@ export default function Custom() {
 
   useEffect(() => {
     if (cameraId) {
-      const html5QrCode = new Html5Qrcode("reader", true);
+      const html5QrCode = new Html5Qrcode("reader", {
+        formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39],
+        verbose: true,
+        useBarCodeDetectorIfSupported: true,
+      });
       html5QrCode.start(
         cameraId,
         {
