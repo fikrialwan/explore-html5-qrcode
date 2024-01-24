@@ -24,6 +24,7 @@ export default function ZxingLibrary() {
           facingMode: "environment",
           height: size.heigth,
           width: size.width,
+          noiseSuppression: true
         },
       },
       videoRef.current,
