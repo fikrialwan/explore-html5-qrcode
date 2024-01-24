@@ -61,7 +61,9 @@ export default function Custom() {
           fps: 10,
           qrbox: { width: 290, height: 100 },
           videoConstraints: {
-            aspectRatio: 29/10
+            aspectRatio: {
+              ideal: 29/10
+            }
           }
         },
         (decodedText: string) => {
