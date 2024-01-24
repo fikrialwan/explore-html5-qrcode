@@ -40,6 +40,13 @@ export default function Custom() {
       if (devices && devices.length) {
         setCameraId(devices[devices.length - 1].id);
       }
+    }).catch((err: string) => {
+      if(`${err}` === "NotAllowedError: Permission denied") {
+        toast({
+          variant: "destructive",
+          title: "Please enable your permission browser",
+        });
+      }
     });
   }, []);
 
@@ -56,7 +63,7 @@ export default function Custom() {
           router.replace("/?result=" + decodedText);
         },
         undefined
-      );
+      )
 
       return () => {
         html5QrCode.stop();
