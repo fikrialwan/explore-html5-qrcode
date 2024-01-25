@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { BrowserMultiFormatReader } from "@zxing/library";
+import { useEffect, useRef } from "react";
+import { BrowserMultiFormatReader, BarcodeFormat, DecodeHintType  } from "@zxing/library";
 import { useRouter } from "next/navigation";
 
 export default function ZxingLibrary() {
   const router = useRouter();
 
+  const hints = new Map();
+  const formats = [BarcodeFormat.CODE_39];
+  
+  hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
+
   const videoRef = useRef<HTMLVideoElement>(null);
-  const reader = useRef(new BrowserMultiFormatReader());
+  const reader = useRef(new BrowserMultiFormatReader(hints));
 
   useEffect(() => {
     if (!videoRef.current) return;
+    reader.current
     reader.current.decodeFromConstraints(
       {
         audio: false,
