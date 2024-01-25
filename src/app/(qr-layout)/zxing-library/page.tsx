@@ -7,6 +7,7 @@ import {
   DecodeHintType,
 } from "@zxing/library";
 import { useRouter } from "next/navigation";
+import { toast } from "~/components/ui/use-toast";
 
 export default function ZxingLibrary() {
   const router = useRouter();
@@ -21,7 +22,6 @@ export default function ZxingLibrary() {
 
   useEffect(() => {
     if (!videoRef.current) return;
-    reader.current;
     reader.current.decodeFromConstraints(
       {
         audio: false,
@@ -29,12 +29,14 @@ export default function ZxingLibrary() {
           width: { min: 640, ideal: 1280, max: 1920 },
           height: { min: 480, ideal: 720, max: 1080 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
-          facingMode: "environment",
+          facingMode: "environment"
         },
       },
       videoRef.current,
       (result) => {
-        if (result) router.replace("/?result=" + result?.getText());
+        // if (result) console.log({result})
+        // if (result) router.replace("/?result=" + result?.getText());
+        if (result) toast({description: JSON.stringify(result.getResultPoints)})
       }
     );
 
