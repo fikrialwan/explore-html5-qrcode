@@ -64,6 +64,11 @@ export default function Custom() {
             width: isLandscape ? 100 : 290,
             height: isLandscape ? 290 : 100,
           },
+          videoConstraints: {
+            width: { min: 640, ideal: 1280, max: 1920 },
+            height: { min: 480, ideal: 720, max: 1080 },
+            aspectRatio: { min: 1, max: 2, ideal: 1 }
+          }
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
