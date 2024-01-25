@@ -54,10 +54,8 @@ export default function Custom() {
 
   useEffect(() => {
     if (cameraId) {
-      const html5QrCode = new Html5Qrcode("reader", {
-        verbose: true,
-        useBarCodeDetectorIfSupported: false
-      });
+      const html5QrCode = new Html5Qrcode("reader", true);
+      html5QrCode.applyVideoConstraints({  advanced : [ { aspectRatio: 29/10 }] })
       html5QrCode.start(
         cameraId,
         {
