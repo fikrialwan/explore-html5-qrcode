@@ -36,7 +36,9 @@ export default function ZxingLibrary() {
       (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
-        if (result) toast({description: JSON.stringify(result.getResultPoints)})
+        if (result) toast({
+          title: JSON.stringify(result?.getText()),
+          description: JSON.stringify(result?.getResultPoints())})
       }
     );
 
