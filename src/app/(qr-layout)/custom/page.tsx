@@ -54,8 +54,6 @@ export default function Custom() {
 
   useEffect(() => {
     const isLandscape = screen.height > screen.width;
-    console.log("heigth ", screen.height)
-    console.log("width ", screen.width)
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", true);
       html5QrCode.start(

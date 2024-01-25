@@ -53,6 +53,7 @@ export default function CustomType() {
   }, []);
 
   useEffect(() => {
+    const isLandscape = screen.height > screen.width;
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", {
         formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39],
@@ -62,7 +63,10 @@ export default function CustomType() {
         cameraId,
         {
           fps: 20,
-          qrbox: { width: 290, height: 100 },
+          qrbox: {
+            width: isLandscape ? 100 : 290,
+            height: isLandscape ? 290 : 100,
+          },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
