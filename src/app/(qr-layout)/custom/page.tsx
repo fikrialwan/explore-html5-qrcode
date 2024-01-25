@@ -1,6 +1,6 @@
 "use client";
 
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
+import { Html5Qrcode } from "html5-qrcode";
 import { useRouter } from "next/navigation";
 import { type ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
@@ -55,7 +55,6 @@ export default function Custom() {
   useEffect(() => {
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", true);
-      html5QrCode.applyVideoConstraints({  advanced : [ { aspectRatio: 29/10 }] })
       html5QrCode.start(
         cameraId,
         {
