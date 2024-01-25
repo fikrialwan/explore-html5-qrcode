@@ -24,14 +24,14 @@ export default function ZxingLibrary() {
           facingMode: "environment",
           height: size.heigth,
           width: size.width,
-          noiseSuppression: true
         },
       },
       videoRef.current,
       (result) => {
         if (result) router.replace("/?result=" + result?.getText());
       }
-    );
+    )
+
     return () => {
       reader.current.reset();
     };
@@ -40,9 +40,6 @@ export default function ZxingLibrary() {
   return (
     <>
       <video ref={videoRef} className="h-full w-full" />
-      <p>
-        width: {size.width} <br /> height: {size.heigth}
-      </p>
     </>
   );
 }

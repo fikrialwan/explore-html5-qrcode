@@ -57,7 +57,7 @@ export default function CustomType() {
       const html5QrCode = new Html5Qrcode("reader", {
         formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39],
         verbose: true,
-        useBarCodeDetectorIfSupported: true,
+        useBarCodeDetectorIfSupported: false,
       });
       html5QrCode.start(
         cameraId,
