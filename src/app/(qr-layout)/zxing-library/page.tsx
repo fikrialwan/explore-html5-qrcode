@@ -26,6 +26,8 @@ export default function ZxingLibrary() {
       {
         audio: false,
         video: {
+          width: { min: 640, ideal: 1280, max: 1920 },
+          height: { min: 480, ideal: 720, max: 1080 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
           facingMode: "environment",
         },
@@ -42,9 +44,6 @@ export default function ZxingLibrary() {
   }, [videoRef]);
 
   return (
-    <div className="h-full w-full relative">
-      <video ref={videoRef} className="h-full w-full" />
-      <div className="w-72 h-28 border-2 border-red-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-    </div>
+    <video ref={videoRef} className="max-h-32 w-full" />
   );
 }
