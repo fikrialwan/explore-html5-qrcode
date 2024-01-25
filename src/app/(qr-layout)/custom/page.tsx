@@ -53,14 +53,19 @@ export default function Custom() {
   }, []);
 
   useEffect(() => {
+    const isLandscape = screen.height > screen.width;
+    console.log("heigth ", screen.height)
+    console.log("width ", screen.width)
     if (cameraId) {
       const html5QrCode = new Html5Qrcode("reader", true);
       html5QrCode.start(
         cameraId,
         {
           fps: 20,
-          qrbox: { width: 290, height: 100 },
-          aspectRatio: 16/9
+          qrbox: {
+            width: isLandscape ? 100 : 290,
+            height: isLandscape ? 290 : 100,
+          },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
