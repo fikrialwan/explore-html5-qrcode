@@ -60,6 +60,7 @@ export default function Custom() {
         {
           fps: 20,
           qrbox: { width: 290, height: 100 },
+          aspectRatio: 16/9
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
