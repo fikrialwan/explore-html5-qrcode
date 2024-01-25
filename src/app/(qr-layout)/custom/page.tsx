@@ -54,7 +54,10 @@ export default function Custom() {
 
   useEffect(() => {
     if (cameraId) {
-      const html5QrCode = new Html5Qrcode("reader", true);
+      const html5QrCode = new Html5Qrcode("reader", {
+        verbose: true,
+        useBarCodeDetectorIfSupported: false
+      });
       html5QrCode.start(
         cameraId,
         {
