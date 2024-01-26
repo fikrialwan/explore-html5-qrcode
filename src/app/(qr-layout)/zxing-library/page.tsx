@@ -45,7 +45,7 @@ export default function ZxingLibrary() {
           const y = resultPoints.length ? resultPoints[resultPoints.length - 1].getY() : 0
           toast({
             title: JSON.stringify(result?.getText()),
-            description: JSON.stringify({result: result?.getResultPoints(), heigth: videoRef.current?.videoHeight, y, height})})
+            description: JSON.stringify({y, heightCenter})})
           // if (y > height - 60 && y < height + 60) {
           //   toast({
           //     title: JSON.stringify(result?.getText()),
