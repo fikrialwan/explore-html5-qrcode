@@ -30,7 +30,7 @@ export default function ZxingLibrary() {
           width: { min: 640, ideal: 1280, max: 1920 },
           height: { min: 480, ideal: 720, max: 1080 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
-          facingMode: "environment"
+          facingMode: "environment",
         },
       },
       videoRef.current,
@@ -42,15 +42,16 @@ export default function ZxingLibrary() {
           const height = videoRef.current?.videoHeight || 0;
           const heightCenter = height / 2;
           const resultPoints = result?.getResultPoints();
-          const y = resultPoints.length ? resultPoints[resultPoints.length - 1].getY() : 0
+          const y = resultPoints.length
+            ? resultPoints[resultPoints.length - 1].getY()
+            : 0;
           toast({
             title: JSON.stringify(result?.getText()),
-            description: JSON.stringify({y, heightCenter})})
-          // if (y > height - 60 && y < height + 60) {
-          //   toast({
-          //     title: JSON.stringify(result?.getText()),
-          //     description: JSON.stringify({result: result?.getResultPoints(), heigth: videoRef.current?.videoHeight, y, height})})
-          // }
+            description: JSON.stringify({ y, heightCenter }),
+          });
+          if (y > heightCenter - 60 && y < heightCenter + 60) {
+            router.replace("/?result=" + result?.getText());
+          }
         }
       }
     );
