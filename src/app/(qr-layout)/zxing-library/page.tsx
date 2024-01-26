@@ -8,6 +8,7 @@ import {
 } from "@zxing/library";
 import { useRouter } from "next/navigation";
 import { toast } from "~/components/ui/use-toast";
+import { read } from "fs";
 
 export default function ZxingLibrary() {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function ZxingLibrary() {
         // if (result) router.replace("/?result=" + result?.getText());
         if (result) toast({
           title: JSON.stringify(result?.getText()),
-          description: JSON.stringify(result?.getResultPoints())})
+          description: JSON.stringify({result: result?.getResultPoints(), heigth: videoRef.current?.videoHeight})})
       }
     );
 
