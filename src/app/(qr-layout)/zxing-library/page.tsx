@@ -37,9 +37,18 @@ export default function ZxingLibrary() {
       (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
-        if (result) toast({
-          title: JSON.stringify(result?.getText()),
-          description: JSON.stringify({result: result?.getResultPoints(), heigth: videoRef.current?.videoHeight})})
+
+        if (result) {
+          const height = videoRef.current?.videoHeight || 0;
+          const heightCenter = height / 2;
+          const resultPoints = result?.getResultPoints();
+          const y = resultPoints.length ? resultPoints[resultPoints.length - 1].getY() : 0
+          if (y > height - 60 && y < height + 60) {
+            toast({
+              title: JSON.stringify(result?.getText()),
+              description: JSON.stringify({result: result?.getResultPoints(), heigth: videoRef.current?.videoHeight, y, height})})
+          }
+        }
       }
     );
 
