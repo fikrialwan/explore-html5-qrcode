@@ -128,7 +128,7 @@ export default function Quagga2() {
             halfSample: true,
             willReadFrequently: true,
           },
-          decoder: { readers: ["code_39_vin_reader"] },
+          decoder: { readers: ["code_39_vin_reader", "code_39_reader", "code_128_reader"] },
           locate: true,
         },
         async (err) => {
