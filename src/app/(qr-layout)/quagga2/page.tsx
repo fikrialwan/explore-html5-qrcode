@@ -10,72 +10,9 @@ export default function Quagga2() {
   const [cameraId, setCameraId] = useState<string>();
 
   const errorCheck = (result: QuaggaJSResultObject) => {
-    const err = getMedianOfCodeErrors(result.codeResult.decodedCodes);
-    // if Quagga is at least 75% certain that it read correctly, then accept the code.
-    if ((err || 0) < 0.25) {
-      // router.replace("/?result=" + result?.getText());
-    }
+    router.replace("/?result=" + result.codeResult.code);
   };
-
-  function getMedian(arr: (number | undefined)[]) {
-    const newArr = [...arr]; // copy the array before sorting, otherwise it mutates the array passed in, which is generally undesireable
-    newArr.sort((a, b) => (a || 0) - (b || 0));
-    const half = Math.floor(newArr.length / 2);
-    if (newArr.length % 2 === 1) {
-      return newArr[half];
-    }
-    return ((newArr[half - 1] || 0) + (newArr[half] || 0)) / 2;
-  }
-
-  function getMedianOfCodeErrors(
-    decodedCodes: {
-      error?: number | undefined;
-      code: number;
-      start: number;
-      end: number;
-    }[]
-  ) {
-    const errors = decodedCodes.flatMap((x) => x.error);
-    const medianOfErrors = getMedian(errors);
-    return medianOfErrors;
-  }
-
-  const handleProcessed = (result: QuaggaJSResultObject) => {
-    const drawingCtx = Quagga.canvas.ctx.overlay;
-    const drawingCanvas = Quagga.canvas.dom.overlay;
-    drawingCtx.font = "24px Arial";
-    drawingCtx.fillStyle = "green";
-
-    if (result) {
-      if (result.boxes) {
-        drawingCtx.clearRect(
-          0,
-          0,
-          parseInt(drawingCanvas.getAttribute("width") || "0"),
-          parseInt(drawingCanvas.getAttribute("height") || "0")
-        );
-        result.boxes
-          .filter((box) => box !== result.box)
-          .forEach((box) => {
-            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-              color: "purple",
-              lineWidth: 2,
-            });
-          });
-      }
-      if (result.box) {
-        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-          color: "blue",
-          lineWidth: 2,
-        });
-      }
-      if (result.codeResult && result.codeResult.code) {
-        drawingCtx.font = "24px Arial";
-        drawingCtx.fillText(result.codeResult.code, 10, 20);
-      }
-    }
-  };
-
+  
   useEffect(() => {
     const enableCamera = async () => {
       await Quagga.CameraAccess.request(null, {});
@@ -132,8 +69,6 @@ export default function Quagga2() {
           locate: true,
         },
         async (err) => {
-          Quagga.onProcessed(handleProcessed);
-
           if (err) {
             return console.error("Error starting Quagga:", err);
           }
@@ -150,17 +85,11 @@ export default function Quagga2() {
       ignoreStart = true;
       Quagga.stop();
       Quagga.offDetected(errorCheck);
-      Quagga.offProcessed(handleProcessed);
+      Quagga.offProcessed(() => {});
     };
   }, [cameraId, scannerRef, errorCheck]);
 
   return (
-    <div ref={scannerRef} className="w-full h-full relative">
-      <canvas
-        className="drawingBuffer absolute border-2 border-green-500"
-        width="290"
-        height="100"
-      />
-    </div>
+    <div ref={scannerRef} className="w-full h-full relative" />
   );
 }
