@@ -26,22 +26,19 @@ export default function ZxingLibrary() {
       {
         audio: false,
         video: {
-          width: 640,
-          height: 640/3,
-          // aspectRatio: { min: 1, max: 2, ideal: 1 },
-          aspectRatio: { min: 3, max: 6, ideal: 3 },
-          facingMode: "environment",
+          width: { min: 640, ideal: 1280, max: 1920 },
+          height: { min: 480, ideal: 720, max: 1080 },
+          aspectRatio: { min: 1, max: 2, ideal: 1 },
+          facingMode: "environment"
         },
       },
       videoRef.current,
       (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
-        if (result)
-          toast({
-            title: JSON.stringify(result?.getText()),
-            description: JSON.stringify(result?.getResultPoints()),
-          });
+        if (result) toast({
+          title: JSON.stringify(result?.getText()),
+          description: JSON.stringify(result?.getResultPoints())})
       }
     );
 
