@@ -50,7 +50,7 @@ export default function ZxingLibrary() {
   return (
     <div className="h-full w-full relative">
       <video ref={videoRef} className="h-full w-full" />
-      {/* <div className="w-72 h-28 border-2 border-red-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" /> */}
+      <div className="w-64 h-20 border-2 border-red-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
     </div>
   );
 }
