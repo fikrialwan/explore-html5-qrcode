@@ -50,7 +50,7 @@ export default function Custom() {
           });
         }
       });
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     const isLandscape = screen.height > screen.width;
@@ -68,8 +68,8 @@ export default function Custom() {
             width: { min: 640, ideal: 1280, max: 1920 },
             height: { min: 480, ideal: 720, max: 1080 },
             aspectRatio: { min: 1, max: 2, ideal: 1 },
-            facingMode: "environment"
-          }
+            facingMode: "environment",
+          },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);

@@ -50,7 +50,7 @@ export default function CustomType() {
           });
         }
       });
-  }, []);
+  }, [toast]);
 
   useEffect(() => {
     const isLandscape = screen.height > screen.width;
@@ -58,21 +58,22 @@ export default function CustomType() {
       const html5QrCode = new Html5Qrcode("reader", {
         formatsToSupport: [Html5QrcodeSupportedFormats.CODE_39],
         verbose: true,
+        useBarCodeDetectorIfSupported: false,
       });
       html5QrCode.start(
         cameraId,
         {
           fps: 20,
           qrbox: {
-            width: isLandscape ? 100 : 290,
-            height: isLandscape ? 290 : 100,
+            width: 290,
+            height: 100,
           },
           videoConstraints: {
             width: { min: 640, ideal: 1280, max: 1920 },
             height: { min: 480, ideal: 720, max: 1080 },
             aspectRatio: { min: 1, max: 2, ideal: 1 },
-            facingMode: "environment"
-          }
+            facingMode: "environment",
+          },
         },
         (decodedText: string) => {
           router.replace("/?result=" + decodedText);
