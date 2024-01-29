@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import Quagga, { QuaggaJSResultObject } from "@ericblade/quagga2";
 import { useRouter } from "next/navigation";
 
@@ -9,10 +15,13 @@ export default function Quagga2() {
   const scannerRef = useRef<HTMLDivElement>(null);
   const [cameraId, setCameraId] = useState<string>();
 
-  const errorCheck = (result: QuaggaJSResultObject) => {
-    router.replace("/?result=" + result.codeResult.code);
-  };
-  
+  const errorCheck = useCallback(
+    (result: QuaggaJSResultObject) => {
+      router.replace("/?result=" + result.codeResult.code);
+    },
+    [router]
+  );
+
   useEffect(() => {
     const enableCamera = async () => {
       await Quagga.CameraAccess.request(null, {});
@@ -89,7 +98,5 @@ export default function Quagga2() {
     };
   }, [cameraId, scannerRef, errorCheck]);
 
-  return (
-    <div ref={scannerRef} className="w-full h-full relative" />
-  );
+  return <div ref={scannerRef} className="w-full h-full relative" />;
 }

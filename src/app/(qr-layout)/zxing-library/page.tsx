@@ -8,7 +8,8 @@ import {
 } from "@zxing/library";
 import { useRouter } from "next/navigation";
 import { toast } from "~/components/ui/use-toast";
-import { read } from "fs";
+import ScannerCanvas from "~/components/ui/scanner-canvas";
+import { Link } from "lucide-react";
 
 export default function ZxingLibrary() {
   const router = useRouter();
@@ -59,12 +60,12 @@ export default function ZxingLibrary() {
     return () => {
       reader.current.reset();
     };
-  }, [videoRef]);
+  }, [videoRef, router]);
 
   return (
     <div className="h-full w-full relative">
-      <video ref={videoRef} className="h-full w-full" />
-      <div className="w-64 h-20 border-2 border-red-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+      <video ref={videoRef} className="h-full w-full bg-black"></video>
+      <ScannerCanvas />
     </div>
   );
 }
