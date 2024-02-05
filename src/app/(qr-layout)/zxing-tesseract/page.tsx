@@ -46,47 +46,33 @@ export default function ZxingTesseract() {
         },
       },
       videoRef.current,
-      (result) => {
+      async (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
 
-        if (result) {
-          if (videoRef.current) {
-            try {
-              const c = document.createElement("canvas");
-              c.width = videoRef.current.videoWidth;
-              c.height = videoRef.current.videoHeight;
-              c.getContext("2d")?.drawImage(
-                videoRef.current,
-                0,
-                0,
-                videoRef.current.videoWidth,
-                videoRef.current.videoHeight
-              );
-              scheduler
-                .addJob("recognize", c)
-                .then(({ data: { text } }) =>
-                  toast({
-                    title: JSON.stringify(result?.getText()),
-                    description: JSON.stringify({ text }),
-                  })
-                )
-                .catch((err) =>
-                  toast({
-                    title: JSON.stringify(result?.getText()),
-                    description: JSON.stringify({ err }),
-                  })
-                );
-            } catch (err) {
-              toast({
-                title: JSON.stringify(result?.getText()),
-                description: JSON.stringify({ err }),
-              });
-            }
-          }
-
+        if (result && videoRef.current) {
           const height = videoRef.current?.videoHeight || 0;
           const heightCenter = height / 2;
+
+          const c = document.createElement("canvas");
+          c.width = videoRef.current.videoWidth;
+          c.height = 120;
+          c.getContext("2d")?.drawImage(
+            videoRef.current,
+            0,
+            heightCenter - 60,
+            videoRef.current.videoWidth,
+            120
+          );
+          const {
+            data: { text },
+          } = await scheduler.addJob("recognize", c);
+          
+          toast({
+            title: JSON.stringify(text.includes('VEHICLE')),
+            description: JSON.stringify(text),
+          });
+
           const resultPoints = result?.getResultPoints();
           const y = resultPoints.length
             ? resultPoints[resultPoints.length - 1].getY()
