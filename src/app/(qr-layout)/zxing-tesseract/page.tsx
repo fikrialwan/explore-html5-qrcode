@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   BrowserMultiFormatReader,
   BarcodeFormat,
   DecodeHintType,
 } from "@zxing/library";
+import { createWorker, createScheduler } from "tesseract.js";
 import { useRouter } from "next/navigation";
+import { toast } from "~/components/ui/use-toast";
 import ScannerCanvas from "~/components/ui/scanner-canvas";
 
-export default function ZxingLibrary() {
+export default function ZxingTesseract() {
   const router = useRouter();
+  const scheduler = createScheduler();
 
   const hints = new Map();
   const formats = [BarcodeFormat.CODE_39];
@@ -20,7 +23,17 @@ export default function ZxingLibrary() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reader = useRef(new BrowserMultiFormatReader(hints));
 
+  const initialWorker = useCallback(async () => {
+    const worker = await createWorker("eng");
+    scheduler.addWorker(worker);
+
+    return () => {
+      worker.terminate();
+    };
+  }, []);
+
   useEffect(() => {
+    initialWorker();
     if (!videoRef.current) return;
     reader.current.decodeFromConstraints(
       {
@@ -33,11 +46,20 @@ export default function ZxingLibrary() {
         },
       },
       videoRef.current,
-      async (result) => {
+      (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
 
         if (result) {
+          if (videoRef.current) {
+            scheduler.addJob("recognize", videoRef.current).then(({ data }) =>
+              toast({
+                title: JSON.stringify(result?.getText()),
+                description: JSON.stringify({ data }),
+              })
+            );
+          }
+          
           const height = videoRef.current?.videoHeight || 0;
           const heightCenter = height / 2;
           const resultPoints = result?.getResultPoints();
