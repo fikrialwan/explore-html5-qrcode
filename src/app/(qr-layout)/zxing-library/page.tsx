@@ -1,18 +1,19 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   BrowserMultiFormatReader,
   BarcodeFormat,
   DecodeHintType,
 } from "@zxing/library";
+import { createWorker, createScheduler } from "tesseract.js";
 import { useRouter } from "next/navigation";
 import { toast } from "~/components/ui/use-toast";
 import ScannerCanvas from "~/components/ui/scanner-canvas";
-import { Link } from "lucide-react";
 
 export default function ZxingLibrary() {
   const router = useRouter();
+  const scheduler = createScheduler();
 
   const hints = new Map();
   const formats = [BarcodeFormat.CODE_39];
@@ -22,7 +23,17 @@ export default function ZxingLibrary() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const reader = useRef(new BrowserMultiFormatReader(hints));
 
+  const initialWorker = useCallback(async () => {
+    const worker = await createWorker("eng");
+    scheduler.addWorker(worker);
+
+    return () => {
+      worker.terminate();
+    };
+  }, []);
+
   useEffect(() => {
+    initialWorker();
     if (!videoRef.current) return;
     reader.current.decodeFromConstraints(
       {
@@ -35,10 +46,12 @@ export default function ZxingLibrary() {
         },
       },
       videoRef.current,
-      (result) => {
+      async (result) => {
         // if (result) console.log({result})
         // if (result) router.replace("/?result=" + result?.getText());
 
+        if (!videoRef.current) return;
+        const { data } = await scheduler.addJob("recognize", videoRef.current);
         if (result) {
           const height = videoRef.current?.videoHeight || 0;
           const heightCenter = height / 2;
@@ -48,7 +61,7 @@ export default function ZxingLibrary() {
             : 0;
           toast({
             title: JSON.stringify(result?.getText()),
-            description: JSON.stringify({ y, heightCenter }),
+            description: JSON.stringify({ data }),
           });
           if (y > heightCenter - 60 && y < heightCenter + 60) {
             router.replace("/?result=" + result?.getText());
