@@ -60,9 +60,9 @@ export default function ZxingTesseract() {
           c.getContext("2d")?.drawImage(
             videoRef.current,
             0,
-            heightCenter - 120,
+            0,
             videoRef.current.videoWidth,
-            240
+            height
           );
           const {
             data: { text },
