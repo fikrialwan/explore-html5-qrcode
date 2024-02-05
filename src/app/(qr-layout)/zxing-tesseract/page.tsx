@@ -59,7 +59,7 @@ export default function ZxingTesseract() {
               })
             );
           }
-          
+
           const height = videoRef.current?.videoHeight || 0;
           const heightCenter = height / 2;
           const resultPoints = result?.getResultPoints();
@@ -67,7 +67,11 @@ export default function ZxingTesseract() {
             ? resultPoints[resultPoints.length - 1].getY()
             : 0;
           if (y > heightCenter - 60 && y < heightCenter + 60) {
-            router.replace("/?result=" + result?.getText());
+            // router.replace("/?result=" + result?.getText());
+            toast({
+              title: JSON.stringify(result?.getText()),
+              description: JSON.stringify(result?.getText()),
+            });
           }
         }
       }
