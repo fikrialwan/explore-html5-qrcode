@@ -65,10 +65,10 @@ export default function ZxingTesseract() {
               );
               scheduler
                 .addJob("recognize", c)
-                .then(({ data }) =>
+                .then(({ data: { text } }) =>
                   toast({
                     title: JSON.stringify(result?.getText()),
-                    description: JSON.stringify({ data }),
+                    description: JSON.stringify({ text }),
                   })
                 )
                 .catch((err) =>
