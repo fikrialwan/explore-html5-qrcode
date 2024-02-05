@@ -52,8 +52,18 @@ export default function ZxingTesseract() {
 
         if (result) {
           if (videoRef.current) {
+            const c = document.createElement("canvas");
+            c.width = videoRef.current.videoWidth;
+            c.height = videoRef.current.videoHeight;
+            c.getContext("2d")?.drawImage(
+              videoRef.current,
+              0,
+              0,
+              videoRef.current.videoWidth,
+              videoRef.current.videoHeight
+            );
             scheduler
-              .addJob("recognize", videoRef.current)
+              .addJob("recognize", c)
               .then(({ data }) =>
                 toast({
                   title: JSON.stringify(result?.getText()),
