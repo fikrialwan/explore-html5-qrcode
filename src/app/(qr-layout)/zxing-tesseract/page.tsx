@@ -52,30 +52,37 @@ export default function ZxingTesseract() {
 
         if (result) {
           if (videoRef.current) {
-            const c = document.createElement("canvas");
-            c.width = videoRef.current.videoWidth;
-            c.height = videoRef.current.videoHeight;
-            c.getContext("2d")?.drawImage(
-              videoRef.current,
-              0,
-              0,
-              videoRef.current.videoWidth,
-              videoRef.current.videoHeight
-            );
-            scheduler
-              .addJob("recognize", c)
-              .then(({ data }) =>
-                toast({
-                  title: JSON.stringify(result?.getText()),
-                  description: JSON.stringify({ data }),
-                })
-              )
-              .catch((err) =>
-                toast({
-                  title: JSON.stringify(result?.getText()),
-                  description: JSON.stringify({ err }),
-                })
+            try {
+              const c = document.createElement("canvas");
+              c.width = videoRef.current.videoWidth;
+              c.height = videoRef.current.videoHeight;
+              c.getContext("2d")?.drawImage(
+                videoRef.current,
+                0,
+                0,
+                videoRef.current.videoWidth,
+                videoRef.current.videoHeight
               );
+              scheduler
+                .addJob("recognize", c)
+                .then(({ data }) =>
+                  toast({
+                    title: JSON.stringify(result?.getText()),
+                    description: JSON.stringify({ data }),
+                  })
+                )
+                .catch((err) =>
+                  toast({
+                    title: JSON.stringify(result?.getText()),
+                    description: JSON.stringify({ err }),
+                  })
+                );
+            } catch (err) {
+              toast({
+                title: JSON.stringify(result?.getText()),
+                description: JSON.stringify({ err }),
+              });
+            }
           }
 
           const height = videoRef.current?.videoHeight || 0;
