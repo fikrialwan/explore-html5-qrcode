@@ -56,13 +56,13 @@ export default function ZxingTesseract() {
 
           const c = document.createElement("canvas");
           c.width = videoRef.current.videoWidth;
-          c.height = 120;
+          c.height = height;
           c.getContext("2d")?.drawImage(
             videoRef.current,
             0,
-            heightCenter - 60,
+            heightCenter - 120,
             videoRef.current.videoWidth,
-            120
+            240
           );
           const {
             data: { text },
