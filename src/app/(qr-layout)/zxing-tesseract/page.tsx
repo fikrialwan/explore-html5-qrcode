@@ -52,12 +52,20 @@ export default function ZxingTesseract() {
 
         if (result) {
           if (videoRef.current) {
-            scheduler.addJob("recognize", videoRef.current).then(({ data }) =>
-              toast({
-                title: JSON.stringify(result?.getText()),
-                description: JSON.stringify({ data }),
-              })
-            );
+            scheduler
+              .addJob("recognize", videoRef.current)
+              .then(({ data }) =>
+                toast({
+                  title: JSON.stringify(result?.getText()),
+                  description: JSON.stringify({ data }),
+                })
+              )
+              .catch((err) =>
+                toast({
+                  title: JSON.stringify(result?.getText()),
+                  description: JSON.stringify({ err }),
+                })
+              );
           }
 
           const height = videoRef.current?.videoHeight || 0;
