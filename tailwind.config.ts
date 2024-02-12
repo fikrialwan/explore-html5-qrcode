@@ -71,12 +71,18 @@ const config = {
           "100%": {
             transform: 'translate(0, 96px)'
           }
+        },
+        "qrcode-scanning-keyframe": {
+          "100%": {
+            transform: 'translate(0, 288px)'
+          }
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "barcode-scanning": "barcode-scanning-keyframe 1.8s linear infinite"
+        "barcode-scanning": "barcode-scanning-keyframe 1.8s linear infinite",
+        "qrcode-scanning": "qrcode-scanning-keyframe 2.8s linear infinite",
       },
     },
   },
