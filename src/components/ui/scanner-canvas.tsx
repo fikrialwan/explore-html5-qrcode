@@ -7,6 +7,7 @@ const ScannerCanvas = () => {
       <div className="h-full flex flex-col">
         <div className="bg-black/20 flex-1 w-full" />
         <div className="w-72 h-24 bg-transparent relative">
+          <div className="absolute top-0 w-72 h-1 bg-gradient-to-b from-white/95 to-transparent animate-barcode-scanning" />
           <div className="absolute bg-white w-10 h-1 -top-1 left-0" />
           <div className="absolute bg-white w-10 h-1 -top-1 right-0" />
           <div className="absolute bg-white w-10 h-1 -bottom-1 left-0" />

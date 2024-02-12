@@ -67,10 +67,16 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "barcode-scanning-keyframe": {
+          "100%": {
+            transform: 'translate(0, 96px)'
+          }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "barcode-scanning": "barcode-scanning-keyframe 1.8s linear infinite"
       },
     },
   },
