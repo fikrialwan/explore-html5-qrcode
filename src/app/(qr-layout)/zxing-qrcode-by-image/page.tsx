@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   BrowserMultiFormatReader,
   BarcodeFormat,
@@ -64,11 +64,11 @@ export default function ZxingLibrary() {
         288
       );
 
-      const img = document.createElement("img");
-      img.src = c.toDataURL("image/png");
-      img.width = 500;
-      img.height = 500;
-      const result = await reader.current.decodeFromImage(img);
+      const imgObj = new Image();
+      imgObj.src = c.toDataURL("image/png");
+      imgObj.setAttribute("crossOrigin", "");
+      const codeReader = new BrowserMultiFormatReader(hints);
+      const result = await codeReader.decodeFromImage(imgObj);
       router.replace("/?result=" + result?.getText());
     }
   };
@@ -83,6 +83,11 @@ export default function ZxingLibrary() {
       >
         Capture
       </button>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+        width={500}
+        height={500}
+      />
     </div>
   );
 }
