@@ -8,9 +8,11 @@ import {
 } from "@zxing/library";
 import { useRouter } from "next/navigation";
 import ScannerQRCodeCanvas from "~/components/ui/scanner-qrcode-canvas";
+import { useToast } from "~/components/ui/use-toast";
 
 export default function ZxingLibrary() {
   const router = useRouter();
+  const { toast } = useToast();
 
   const hints = new Map();
   const formats = [BarcodeFormat.QR_CODE];
@@ -68,8 +70,28 @@ export default function ZxingLibrary() {
       imgObj.src = c.toDataURL("image/png");
       imgObj.setAttribute("crossOrigin", "");
       const codeReader = new BrowserMultiFormatReader(hints);
-      const result = await codeReader.decodeFromImage(imgObj);
-      router.replace("/?result=" + result?.getText());
+      try {
+        const result = await codeReader.decodeFromImage(imgObj);
+        router.replace("/?result=" + result?.getText());
+      } catch (error: any) {
+        try {
+          toast({
+            title: "Error",
+            description: error.toString(),
+          });
+          const img = document.createElement("img");
+          img.src = c.toDataURL("image/png");
+          img.width = 288;
+          img.height = 288;
+          const resultImg = await codeReader.decodeFromImage(img);
+          router.replace("/?result=" + resultImg?.getText());
+        } catch (error: any) {
+          toast({
+            title: "Error",
+            description: error.toString(),
+          });
+        }
+      }
     }
   };
 
