@@ -57,14 +57,14 @@ export default function ZxingLibrary() {
 
       c.getContext("2d")?.drawImage(
         videoRef.current,
-        widthCenter - 144,
-        heightCenter - 144,
-        288,
-        288,
+        widthCenter - 288,
+        heightCenter - 288,
+        576,
+        576,
         0,
         0,
-        288,
-        288
+        576,
+        576
       );
 
       imgRef.current.src = c.toDataURL("image/png");
