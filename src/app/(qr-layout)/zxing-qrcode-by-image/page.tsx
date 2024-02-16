@@ -20,6 +20,7 @@ export default function ZxingLibrary() {
   hints.set(DecodeHintType.POSSIBLE_FORMATS, formats);
 
   const videoRef = useRef<HTMLVideoElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const reader = useRef(new BrowserMultiFormatReader(hints));
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export default function ZxingLibrary() {
   }, [videoRef]);
 
   const handleCapture = async () => {
-    if (videoRef.current) {
+    if (videoRef.current && imgRef.current) {
       const height = videoRef.current?.videoHeight || 0;
       const heightCenter = height / 2;
       const width = videoRef.current?.videoWidth || 0;
@@ -66,11 +67,10 @@ export default function ZxingLibrary() {
         576
       );
 
-      const img = new Image();
-      img.src = c.toDataURL("image/png");
+      imgRef.current.src = c.toDataURL("image/png");
       const codeReader =  new BrowserMultiFormatReader(hints)
       try {
-        const result = await codeReader.decodeFromImage(img);
+        const result = await codeReader.decodeFromImage(imgRef.current);
         router.replace("/?result=" + result?.getText());
       } catch (error: any) {
         toast({
@@ -91,6 +91,7 @@ export default function ZxingLibrary() {
       >
         Capture
       </button>
+      <img ref={imgRef} width={576} height={576} className="hidden" />
     </div>
   );
 }
