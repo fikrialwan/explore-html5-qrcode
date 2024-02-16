@@ -69,28 +69,14 @@ export default function ZxingLibrary() {
       const imgObj = new Image();
       imgObj.src = c.toDataURL("image/png");
       imgObj.setAttribute("crossOrigin", "");
-      const codeReader = new BrowserMultiFormatReader(hints);
       try {
-        const result = await codeReader.decodeFromImage(imgObj);
+        const result = await reader.current.decodeFromImage(imgObj);
         router.replace("/?result=" + result?.getText());
       } catch (error: any) {
-        try {
-          toast({
-            title: "Error",
-            description: error.toString(),
-          });
-          const img = document.createElement("img");
-          img.src = c.toDataURL("image/png");
-          img.width = 288;
-          img.height = 288;
-          const resultImg = await codeReader.decodeFromImage(img);
-          router.replace("/?result=" + resultImg?.getText());
-        } catch (error: any) {
-          toast({
-            title: "Error",
-            description: error.toString(),
-          });
-        }
+        toast({
+          title: "Error",
+          description: error.toString(),
+        });
       }
     }
   };
