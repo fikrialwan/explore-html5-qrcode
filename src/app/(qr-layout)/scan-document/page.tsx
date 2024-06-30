@@ -42,7 +42,7 @@ export default function ScanDocument() {
         audio: false,
         video: {
           width: { min: 1280, ideal: 3840, max: 3840 },
-          height: { min: 720, ideal: 3840, max: 3840 },
+          height: { min: 720, ideal: 2160, max: 2160 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
           frameRate: { ideal: 60 },
           facingMode: "environment",
