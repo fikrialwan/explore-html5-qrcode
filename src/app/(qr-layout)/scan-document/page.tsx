@@ -40,6 +40,7 @@ export default function ScanDocument() {
   return (
     <div className="h-full w-full relative bg-black">
       <video ref={videoRef} className="h-full w-full"></video>
+      <div className="absolute w-full h-auto top-[15px] left-1/2 -translate-x-1/2 max-w-[80%] max-h-[60%] aspect-[8/5] border-white border-2 rounded-md bg-transparent shadow-scan" />
     </div>
   );
 }
