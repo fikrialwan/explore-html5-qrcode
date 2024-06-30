@@ -26,19 +26,7 @@ export default function ScanDocument() {
           w,
           h
         );
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        // Adjust brightness and contrast
-        const brightness = 10; // Adjust brightness (-255 to 255)
-        const contrast = 1.2; // Adjust contrast (0.0 to 4.0)
-
-        for (let i = 0; i < imageData.data.length; i += 4) {
-          imageData.data[i] = imageData.data[i] * contrast + brightness; // Red
-          imageData.data[i + 1] = imageData.data[i + 1] * contrast + brightness; // Green
-          imageData.data[i + 2] = imageData.data[i + 2] * contrast + brightness; // Blue
-        }
-
-        ctx.putImageData(imageData, 0, 0);
         canvas.toBlob((blob) => {
           const url = URL.createObjectURL(blob as Blob);
 
@@ -53,15 +41,33 @@ export default function ScanDocument() {
       .getUserMedia({
         audio: false,
         video: {
-          width: { min: 640, ideal: 1280, max: 1920 },
-          height: { min: 480, ideal: 720, max: 1080 },
+          width: { min: 1280, ideal: 3840, max: 3840 },
+          height: { min: 720, ideal: 3840, max: 3840 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
+          frameRate: { ideal: 60 },
           facingMode: "environment",
         },
       })
       .then((stream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          const videoTrack = stream.getVideoTracks()[0];
+
+          // Check and apply advanced constraints if supported
+          const supportedConstraints =
+            navigator.mediaDevices.getSupportedConstraints();
+          if ("focusMode" in supportedConstraints) {
+            (videoTrack as any)
+              .applyConstraints({
+                advanced: [{ focusMode: "continuous" }],
+              })
+              .then(() => {
+                console.log("Focus mode set to continuous");
+              })
+              .catch((error: any) => {
+                console.error("Error applying focus mode constraint:", error);
+              });
+          }
           videoRef.current.onloadedmetadata = () => {
             videoRef.current?.play();
           };
