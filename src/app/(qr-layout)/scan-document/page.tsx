@@ -44,7 +44,7 @@ export default function ScanDocument() {
           width: { min: 640, ideal: 3840, max: 3840 },
           height: { min: 480, ideal: 2160, max: 2160 },
           aspectRatio: { min: 1, max: 2, ideal: 1 },
-          frameRate: { ideal: 60 },
+          // frameRate: { ideal: 60 },
           facingMode: "environment",
         },
       })
