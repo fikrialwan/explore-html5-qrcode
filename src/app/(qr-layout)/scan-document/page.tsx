@@ -13,9 +13,9 @@ export default function ScanDocument() {
       const h = video.videoWidth * (5 / 8);
       canvas.width = w;
       canvas.height = h;
-      canvas
-        .getContext("2d")
-        ?.drawImage(
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx?.drawImage(
           video,
           (video.videoWidth - w) / 2,
           video.videoHeight * 0.15,
@@ -26,10 +26,25 @@ export default function ScanDocument() {
           w,
           h
         );
-      canvas.toBlob((blob) => {
-        const url = URL.createObjectURL(blob as Blob);
-        window.open(url);
-      });
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        // Adjust brightness and contrast
+        const brightness = 10; // Adjust brightness (-255 to 255)
+        const contrast = 1.2; // Adjust contrast (0.0 to 4.0)
+
+        for (let i = 0; i < imageData.data.length; i += 4) {
+          imageData.data[i] = imageData.data[i] * contrast + brightness; // Red
+          imageData.data[i + 1] = imageData.data[i + 1] * contrast + brightness; // Green
+          imageData.data[i + 2] = imageData.data[i + 2] * contrast + brightness; // Blue
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob as Blob);
+
+          window.open(url);
+        });
+      }
     }
   };
 
