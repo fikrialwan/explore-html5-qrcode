@@ -25,6 +25,16 @@ export default function ScanDocument() {
         }
       })
       .catch(console.log);
+
+    return () => {
+      const videoElement = videoRef.current;
+      if (videoElement && videoElement.srcObject) {
+        const stream = videoElement.srcObject as MediaStream;
+        if (stream.getTracks) {
+          stream.getTracks().forEach((track) => track.stop());
+        }
+      }
+    };
   }, []);
 
   return (
