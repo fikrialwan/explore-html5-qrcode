@@ -51,23 +51,7 @@ export default function ScanDocument() {
       .then((stream) => {
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
-          const videoTrack = stream.getVideoTracks()[0];
-
-          // Check and apply advanced constraints if supported
-          const supportedConstraints =
-            navigator.mediaDevices.getSupportedConstraints();
-          if ("focusMode" in supportedConstraints) {
-            (videoTrack as any)
-              .applyConstraints({
-                advanced: [{ focusMode: "continuous" }],
-              })
-              .then(() => {
-                console.log("Focus mode set to continuous");
-              })
-              .catch((error: any) => {
-                console.error("Error applying focus mode constraint:", error);
-              });
-          }
+          
           videoRef.current.onloadedmetadata = () => {
             videoRef.current?.play();
           };
