@@ -44,7 +44,7 @@ export default function ZxingLibrary() {
           const y = resultPoints.length
             ? resultPoints[resultPoints.length - 1].getY()
             : 0;
-          if (y > heightCenter - 192 && y < heightCenter + 192) {
+          if (y > heightCenter - 288 && y < heightCenter + 288) {
             router.replace("/?result=" + result?.getText());
           }
         }
