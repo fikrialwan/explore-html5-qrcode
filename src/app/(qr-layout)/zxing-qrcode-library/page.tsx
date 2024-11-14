@@ -38,15 +38,16 @@ export default function ZxingLibrary() {
         // if (result) router.replace("/?result=" + result?.getText());
 
         if (result) {
-          const height = videoRef.current?.videoHeight || 0;
-          const heightCenter = height / 2;
-          const resultPoints = result?.getResultPoints();
-          const y = resultPoints.length
-            ? resultPoints[resultPoints.length - 1].getY()
-            : 0;
-          if (y > heightCenter - 288 && y < heightCenter + 288) {
-            router.replace("/?result=" + result?.getText());
-          }
+          // const height = videoRef.current?.videoHeight || 0;
+          // const heightCenter = height / 2;
+          // const resultPoints = result?.getResultPoints();
+          // const y = resultPoints.length
+          //   ? resultPoints[resultPoints.length - 1].getY()
+          //   : 0;
+          // if (y > heightCenter - 288 && y < heightCenter + 288) {
+          //   router.replace("/?result=" + result?.getText());
+          // }
+          router.replace("/?result=" + result?.getText());
         }
       }
     );
